@@ -1,4 +1,5 @@
-﻿using Application.Products;
+﻿using Application.Categories;
+using Application.Products;
 using AutoMapper;
 using Infrastructure.EntityFrameworkCore;
 using Infrastructure.EntityFrameworkCore.Repositories;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ProductWebApi
@@ -39,12 +41,19 @@ namespace ProductWebApi
                 
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling
+                    = ReferenceLoopHandling.Ignore;
+            });
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")));
 
             services.AddTransient<DatabaseSeeder>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         }
 

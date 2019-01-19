@@ -1,5 +1,5 @@
-﻿using Core.Common;
-using Core.Enums;
+﻿using Core.Categories;
+using Core.Common;
 
 namespace Core.Products
 {
@@ -9,16 +9,17 @@ namespace Core.Products
         {
                 
         }
-        public Product(string name, decimal cost, Category category)
+        public Product(string name, decimal cost, int categoryId)
         {
             Name = name;
             Cost = cost;
-            Category = category;
+            CategoryId = categoryId;
         }    
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Cost { get; set; }
 
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
+        public int CategoryId { get; set; }
     }
 }

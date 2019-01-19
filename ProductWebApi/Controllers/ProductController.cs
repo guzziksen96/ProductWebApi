@@ -47,6 +47,6 @@ namespace ProductWebApi.Controllers
             var product = await _service.UpdateAsync(productDto, id);
             return Ok(product);
         }
-
+        
     }
 }

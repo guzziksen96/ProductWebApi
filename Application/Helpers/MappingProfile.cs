@@ -1,5 +1,7 @@
-﻿using Application.Products.Dtos;
+﻿using Application.Categories.Dtos;
+using Application.Products.Dtos;
 using AutoMapper;
+using Core.Categories;
 using Core.Products;
 
 namespace Application.Helpers
@@ -8,8 +10,10 @@ namespace Application.Helpers
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
-      
+            CreateMap<Product, ProductDto>()
+                .ForMember(p => p.CategoryName, m => m.MapFrom(p => p.Category.Name))
+                .ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }
 }

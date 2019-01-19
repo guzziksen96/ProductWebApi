@@ -7,9 +7,10 @@ namespace Application.Products
 {
     public interface IProductService
     {
-        Task<Product> GetAsync(int id);
-        Task<ICollection<Product>> GetAllAsync();
-        Task<Product> InsertAsync(ProductDto input);
-        Task<Product> UpdateAsync(ProductDto input, int id);
+        Task<ProductDto> GetAsync(int id);
+        Task<ICollection<ProductDto>> GetAllAsync();
+        Task<ProductDto> InsertAsync(ProductDto input);
+        Task<ProductDto> UpdateAsync(ProductDto input, int id);
+        Task<int> DeleteAsync(int id);
     }
 }
