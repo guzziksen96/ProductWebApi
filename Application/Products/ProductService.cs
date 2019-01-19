@@ -4,6 +4,8 @@ using Application.Products.Dtos;
 using AutoMapper;
 using Core.Products;
 using Infrastructure.EntityFrameworkCore.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Application.Products
 {
@@ -19,7 +21,9 @@ namespace Application.Products
         } 
         public async Task<ProductDto> GetAsync(int id)
         {
-            var result = await _repository.GetAsync(id);
+            var result = await _repository.GetAll()
+                .Include(e => e.Category)
+                .FirstOrDefaultAsync(p => p.Id == id); 
             var resultDto = _mapper.Map<ProductDto>(result);
             return resultDto;
 
@@ -27,7 +31,10 @@ namespace Application.Products
 
         public async Task<ICollection<ProductDto>> GetAllAsync()
         {
-            var result = await _repository.GetAllAsync();
+            var result = await _repository.GetAll()
+                .Include(e => e.Category)
+                .ToListAsync();
+
             var resultDto = _mapper.Map<ICollection<ProductDto>>(result);
             return resultDto;
 
