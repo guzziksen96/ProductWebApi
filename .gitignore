@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /logs
 /ProductWebApi/${basedir}/logs
+/ProductWebApi/logs
