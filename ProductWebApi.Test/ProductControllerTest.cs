@@ -126,5 +126,25 @@ namespace ProductWebApi.Test
             // Assert
             Assert.IsType<BadRequestObjectResult>(badResponse.Result);
         }
+
+        [Fact]
+        public async void Update_ValidObjectPassed_ReturnsOkResult()
+        {
+            // Arrange
+            var productIdToUpdate = 1;
+            var productToUpdate = new ProductDto()
+            {
+                Name = "Bicycle",
+                CategoryId = 2,
+                Cost = 12.00M
+            };
+            _productService.SetupUpdateProduct(productIdToUpdate, productToUpdate);
+           
+            // Act
+            var okResult = await _controller.Put(productIdToUpdate, productToUpdate);
+
+            // Assert
+            Assert.IsType<OkObjectResult>(okResult.Result);
+        }
     }
 }

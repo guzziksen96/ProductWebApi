@@ -14,14 +14,9 @@ namespace ProductWebApi.Controllers
     public class ProductController : Controller
     {
         private IProductService _service;
-        protected readonly ILogger<ProductController> _logger;
-        public ProductController(IProductService service, ILogger<ProductController> logger = null)
+        public ProductController(IProductService service)
         {
             _service = service;
-            if (null != logger)
-            {
-                _logger = logger;
-            }
         }
 
         [HttpGet]

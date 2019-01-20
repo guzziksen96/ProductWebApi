@@ -55,6 +55,7 @@ namespace Application.Products
                 result = await _repository.GetAll()
                     .Include(e => e.Category)
                     .ToListAsync();
+                _logger.LogInformation($"Returning {result.Count} products.");
             }
             catch (Exception e)
             {
@@ -74,6 +75,8 @@ namespace Application.Products
             try
             {
                 result = await _repository.AddAsync(product);
+                _logger.LogInformation($"New product with name: {product.Name}, cost: {product.Cost}," +
+                                       $" and categoryId: {product.Category} was added.");
             }
             catch (Exception e)
             {
@@ -92,6 +95,8 @@ namespace Application.Products
             try
             {
                 result = await _repository.UpdateAsync(product, id);
+                _logger.LogInformation($"Product with id: {id} was updated. Actual cost: {product.Cost}, " +
+                                       $"name: {product.Name}, categoryId: {product.Category}");
             }
             catch (Exception e)
             {
