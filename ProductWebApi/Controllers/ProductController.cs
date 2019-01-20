@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Products;
 using Application.Products.Dtos;
@@ -27,6 +28,10 @@ namespace ProductWebApi.Controllers
         public async Task<ActionResult<ICollection<ProductDto>>> Get()
         {
             var products = await _service.GetAllAsync();
+            if (products.Count == 0)
+            {
+                return NotFound();
+            }
             return Ok(products);
         }
 
@@ -35,6 +40,10 @@ namespace ProductWebApi.Controllers
         public async Task<ActionResult<ProductDto>> Get(int id)
         {
             var product = await _service.GetAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
             return Ok(product);
         }
 
@@ -42,8 +51,13 @@ namespace ProductWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDto>> Post([FromBody] ProductDto productDto)
         {
+            if (!ModelState.IsValid) 
+            {
+                return BadRequest(ModelState);
+            }
+
             var product = await _service.InsertAsync(productDto);
-            _logger.LogInformation($"Created product Name: {productDto.Name}, Cost: {productDto.Cost}, CategoryName: {productDto.CategoryName}.");
+            //_logger.LogInformation($"Created product Name: {productDto.Name}, Cost: {productDto.Cost}, CategoryName: {productDto.CategoryName}.");
             return Ok(product);
         }
 
@@ -51,6 +65,10 @@ namespace ProductWebApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductDto>> Put(int id, [FromBody] ProductDto productDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var product = await _service.UpdateAsync(productDto, id);
             return Ok(product);
         }
