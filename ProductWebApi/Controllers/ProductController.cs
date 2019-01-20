@@ -57,7 +57,7 @@ namespace ProductWebApi.Controllers
             }
 
             var product = await _service.InsertAsync(productDto);
-            //_logger.LogInformation($"Created product Name: {productDto.Name}, Cost: {productDto.Cost}, CategoryName: {productDto.CategoryName}.");
+    
             return Ok(product);
         }
 

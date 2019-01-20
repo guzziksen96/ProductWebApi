@@ -11,6 +11,5 @@ namespace Application.Products
         Task<ICollection<ProductDto>> GetAllAsync();
         Task<ProductDto> InsertAsync(ProductDto input);
         Task<ProductDto> UpdateAsync(ProductDto input, int id);
-        Task<int> DeleteAsync(int id);
     }
 }

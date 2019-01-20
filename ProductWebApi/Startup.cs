@@ -76,7 +76,6 @@ namespace ProductWebApi
           
             loggerFactory.AddNLog();
             app.AddNLogWeb();
-
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()

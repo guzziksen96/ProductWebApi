@@ -24,6 +24,10 @@ namespace ProductWebApi.Controllers
         public async Task<ActionResult<ICollection<Category>>> Get()
         {
             var categories = await _service.GetAllAsync();
+            if (categories.Count == 0)
+            {
+                return NotFound();
+            }
             return Ok(categories);
         }
 
@@ -32,6 +36,10 @@ namespace ProductWebApi.Controllers
         public async Task<ActionResult<Category>> Get(int id)
         {
             var category = await _service.GetAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
             return Ok(category);
         }
 

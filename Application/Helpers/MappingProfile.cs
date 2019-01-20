@@ -11,8 +11,9 @@ namespace Application.Helpers
         public MappingProfile()
         {
             CreateMap<Product, ProductDto>()
-                .ForMember(p => p.CategoryName, m => m.MapFrom(p => p.Category.Name))
-                .ReverseMap();
+                .ForMember(p => p.CategoryName, m => m.MapFrom(p => p.Category.Name));
+            CreateMap<ProductDto, Product>();
+
             CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }
