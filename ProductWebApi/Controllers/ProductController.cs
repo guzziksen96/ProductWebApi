@@ -4,6 +4,7 @@ using Application.Products;
 using Application.Products.Dtos;
 using Core.Products;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ProductWebApi.Controllers
 {
@@ -12,13 +13,18 @@ namespace ProductWebApi.Controllers
     public class ProductController : Controller
     {
         private IProductService _service;
-
-        public ProductController(IProductService service)
+        protected readonly ILogger<ProductController> _logger;
+        public ProductController(IProductService service, ILogger<ProductController> logger = null)
         {
             _service = service;
+            if (null != logger)
+            {
+                _logger = logger;
+            }
         }
+
         [HttpGet]
-        public async Task<ActionResult<ICollection<Product>>> Get()
+        public async Task<ActionResult<ICollection<ProductDto>>> Get()
         {
             var products = await _service.GetAllAsync();
             return Ok(products);
@@ -26,7 +32,7 @@ namespace ProductWebApi.Controllers
 
         // GET api/product/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> Get(int id)
+        public async Task<ActionResult<ProductDto>> Get(int id)
         {
             var product = await _service.GetAsync(id);
             return Ok(product);
@@ -34,15 +40,16 @@ namespace ProductWebApi.Controllers
 
         // POST api/product
         [HttpPost]
-        public async Task<ActionResult<Product>> Post([FromBody] ProductDto productDto)
+        public async Task<ActionResult<ProductDto>> Post([FromBody] ProductDto productDto)
         {
             var product = await _service.InsertAsync(productDto);
+            _logger.LogInformation($"Created product Name: {productDto.Name}, Cost: {productDto.Cost}, CategoryName: {productDto.CategoryName}.");
             return Ok(product);
         }
 
         // PUT api/product/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Product>> Put(int id, [FromBody] ProductDto productDto)
+        public async Task<ActionResult<ProductDto>> Put(int id, [FromBody] ProductDto productDto)
         {
             var product = await _service.UpdateAsync(productDto, id);
             return Ok(product);

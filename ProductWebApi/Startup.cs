@@ -1,4 +1,5 @@
-﻿using Application.Categories;
+﻿using System.Text;
+using Application.Categories;
 using Application.Products;
 using AutoMapper;
 using Infrastructure.EntityFrameworkCore;
@@ -11,7 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ProductWebApi
@@ -58,7 +62,7 @@ namespace ProductWebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DatabaseSeeder seeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DatabaseSeeder seeder, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -68,6 +72,11 @@ namespace ProductWebApi
             {
                 app.UseHsts();
             }
+            env.ConfigureNLog("nlog.config");
+            
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
+
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
