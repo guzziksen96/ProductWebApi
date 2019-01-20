@@ -73,7 +73,7 @@ namespace ProductWebApi
                 app.UseHsts();
             }
             env.ConfigureNLog("nlog.config");
-            
+          
             loggerFactory.AddNLog();
             app.AddNLogWeb();
 
