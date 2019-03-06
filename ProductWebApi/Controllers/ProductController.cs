@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Products;
+using Application.Products.Commands.CreateProduct;
 using Application.Products.Dtos;
+using Application.Products.Queries;
 using Core.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,7 +13,7 @@ namespace ProductWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : Controller
+    public class ProductController : BaseContoller
     {
         private IProductService _service;
         public ProductController(IProductService service)
@@ -34,7 +36,7 @@ namespace ProductWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> Get(int id)
         {
-            var product = await _service.GetAsync(id);
+            var product = await Mediator.Send(new ProductQuery(id));
             if (product == null)
             {
                 return NotFound();
@@ -51,7 +53,7 @@ namespace ProductWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var product = await _service.InsertAsync(productDto);
+            var product = await Mediator.Send(new CreateProductCommand(productDto));
     
             return Ok(product);
         }

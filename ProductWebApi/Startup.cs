@@ -1,11 +1,14 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using Application.Categories;
 using Application.Products;
+using Application.Products.Queries;
 using AutoMapper;
 using Infrastructure.EntityFrameworkCore;
 using Infrastructure.EntityFrameworkCore.Repositories;
 using Infrastructure.EntityFrameworkCore.Repositories.Interfaces;
 using Infrastructure.EntityFrameworkCore.Seeders;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +55,8 @@ namespace ProductWebApi
             });
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")));
+
+            services.AddMediatR(typeof(ProductQuery).GetTypeInfo().Assembly);
 
             services.AddTransient<DatabaseSeeder>();
             services.AddScoped<IProductService, ProductService>();
