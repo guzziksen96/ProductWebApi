@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Products;
 using Application.Products.Commands.CreateProduct;
+using Application.Products.Commands.UpdateProduct;
 using Application.Products.Dtos;
 using Application.Products.Queries;
 using Core.Products;
@@ -15,16 +16,11 @@ namespace ProductWebApi.Controllers
     [ApiController]
     public class ProductController : BaseContoller
     {
-        private IProductService _service;
-        public ProductController(IProductService service)
-        {
-            _service = service;
-        }
 
         [HttpGet]
         public async Task<ActionResult<ICollection<ProductDto>>> Get()
         {
-            var products = await _service.GetAllAsync();
+            var products = await Mediator.Send(new ProductsQuery());
             if (products.Count == 0)
             {
                 return NotFound();
@@ -66,7 +62,7 @@ namespace ProductWebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var product = await _service.UpdateAsync(productDto, id);
+            var product = await Mediator.Send(new UpdateProductCommand(productDto, id));
             return Ok(product);
         }
         

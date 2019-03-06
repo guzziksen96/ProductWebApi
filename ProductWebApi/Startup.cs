@@ -59,7 +59,6 @@ namespace ProductWebApi
             services.AddMediatR(typeof(ProductQuery).GetTypeInfo().Assembly);
 
             services.AddTransient<DatabaseSeeder>();
-            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
