@@ -60,7 +60,6 @@ namespace ProductWebApi
 
             services.AddTransient<DatabaseSeeder>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         }

@@ -4,26 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Categories;
+using Application.Categories.Queries;
 using Core.Categories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 
 namespace ProductWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : Controller
+    public class CategoryController : BaseContoller
     {
-        private ICategoryService _service;
-
-        public CategoryController(ICategoryService service)
-        {
-            _service = service;
-        }
-
         [HttpGet]
         public async Task<ActionResult<ICollection<Category>>> Get()
         {
-            var categories = await _service.GetAllAsync();
+            var categories = await Mediator.Send(new CategoriesQuery());
             if (categories.Count == 0)
             {
                 return NotFound();
@@ -35,7 +30,7 @@ namespace ProductWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> Get(int id)
         {
-            var category = await _service.GetAsync(id);
+            var category = await Mediator.Send(new CategoryQuery(id));
             if (category == null)
             {
                 return NotFound();
