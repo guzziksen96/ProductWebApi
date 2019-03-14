@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 
 namespace ProductWebApi
 {
